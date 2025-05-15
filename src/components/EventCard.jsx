@@ -13,7 +13,7 @@ function EventCard({ event, isRegistered = false }) {
     : description
 
   return (
-    <div className="card hover:shadow-md transition-shadow duration-300 relative flex flex-col justify-between">
+    <div className="card hover:shadow-md transition-shadow duration-300 relative flex flex-col justify-between bg-white dark:bg-gray-900 rounded-xl">
       <div>
         <div className="relative">
           <img
@@ -36,13 +36,13 @@ function EventCard({ event, isRegistered = false }) {
         </div>
 
         <div className="p-4">
-          <h3 className="text-xl font-semibold mb-2">{title}</h3>
-          <p className="text-gray-600 mb-4">{truncatedDescription}</p>
-          <div className="flex items-center text-gray-500 mb-2">
+          <h3 className="text-xl font-semibold mb-2 dark:text-white">{title}</h3>
+          <p className="text-gray-600 dark:text-gray-300 mb-4">{truncatedDescription}</p>
+          <div className="flex items-center text-gray-500 dark:text-gray-400 mb-2">
             <FiCalendar className="mr-2" />
             <span>{formattedDate}</span>
           </div>
-          <div className="flex items-center text-gray-500 mb-4">
+          <div className="flex items-center text-gray-500 dark:text-gray-400 mb-4">
             <FiMapPin className="mr-2" />
             <span>{location}</span>
           </div>

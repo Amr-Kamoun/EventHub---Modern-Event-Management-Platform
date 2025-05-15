@@ -58,11 +58,11 @@ function AdminEvents() {
   )
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 dark:text-white">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Manage Events</h1>
-          <p className="text-gray-600">Create, edit, and delete events on your platform</p>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Manage Events</h1>
+          <p className="text-gray-600 dark:text-gray-400">Create, edit, and delete events on your platform</p>
         </div>
         <div className="mt-4 md:mt-0">
           <Link to="/admin/events/new" className="btn-primary flex items-center">
@@ -73,16 +73,16 @@ function AdminEvents() {
       </div>
 
       {/* Search */}
-      <div className="bg-white rounded-xl shadow-soft p-6 mb-8">
+      <div className="bg-white dark:bg-gray-900 rounded-xl shadow-soft p-6 mb-8">
         <div className="flex flex-col md:flex-row gap-4">
           <div className="flex-grow relative">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <FiSearch className="text-gray-400" />
+              <FiSearch className="text-gray-400 dark:text-gray-300" />
             </div>
             <input
               type="text"
               placeholder="Search events..."
-              className="form-input pl-10"
+              className="form-input pl-10 bg-white dark:bg-gray-800 text-gray-800 dark:text-white border-gray-300 dark:border-gray-600"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
@@ -91,7 +91,7 @@ function AdminEvents() {
       </div>
 
       {/* Events Table */}
-      <div className="bg-white rounded-xl shadow-soft overflow-hidden">
+      <div className="bg-white dark:bg-gray-900 rounded-xl shadow-soft overflow-hidden">
         {loading ? (
           <div className="flex justify-center items-center h-64">
             <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-500"></div>
@@ -99,18 +99,18 @@ function AdminEvents() {
         ) : filteredEvents.length > 0 ? (
           <>
             <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
+              <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                <thead className="bg-gray-50 dark:bg-gray-800">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Event</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Location</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Category</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Actions</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">Event</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">Date</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">Location</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">Category</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">Status</th>
+                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
+                <tbody className="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-700">
                   {filteredEvents.map((event) => {
                     const eventDate = new Date(event.date)
                     const isUpcoming = eventDate > new Date()
@@ -118,29 +118,31 @@ function AdminEvents() {
                     return (
                       <tr key={event.id}>
                         <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm font-medium text-gray-900">{event.title}</div>
+                          <div className="text-sm font-medium text-gray-900 dark:text-white">{event.title}</div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm text-gray-500">{eventDate.toLocaleDateString()}</div>
+                          <div className="text-sm text-gray-500 dark:text-gray-300">{eventDate.toLocaleDateString()}</div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm text-gray-500">{event.location}</div>
+                          <div className="text-sm text-gray-500 dark:text-gray-300">{event.location}</div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
-                          <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
+                          <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white">
                             {event.category}
                           </span>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                            isUpcoming ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
+                            isUpcoming
+                              ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300'
+                              : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'
                           }`}>
                             {isUpcoming ? 'Upcoming' : 'Past'}
                           </span>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                           <div className="flex justify-end space-x-2">
-                            <Link to={`/events/${event.id}`} className="text-gray-500 hover:text-gray-700" title="View">
+                            <Link to={`/events/${event.id}`} className="text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-white" title="View">
                               <FiEye />
                             </Link>
                             <Link to={`/admin/events/edit/${event.id}`} className="text-primary-500 hover:text-primary-700" title="Edit">
@@ -159,17 +161,17 @@ function AdminEvents() {
             </div>
 
             {/* Pagination Controls */}
-            <div className="flex justify-center mt-6 space-x-4">
+            <div className="flex justify-center items-center mt-6 space-x-4">
               <button
-                className="px-4 py-2 bg-white border border-primary-500 text-primary-600 rounded disabled:opacity-50"
+                className="px-4 py-2 bg-white dark:bg-gray-800 border border-primary-500 text-primary-600 rounded disabled:opacity-50"
                 onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
                 disabled={currentPage === 1}
               >
                 Previous
               </button>
-              <span className="text-gray-700 font-medium">Page {currentPage}</span>
+              <span className="text-gray-700 dark:text-gray-300 font-medium">Page {currentPage}</span>
               <button
-                className="px-4 py-2 bg-white border border-primary-500 text-primary-600 rounded disabled:opacity-50"
+                className="px-4 py-2 bg-white dark:bg-gray-800 border border-primary-500 text-primary-600 rounded disabled:opacity-50"
                 onClick={() => setCurrentPage((prev) => prev + 1)}
                 disabled={events.length < eventsPerPage}
               >
@@ -179,8 +181,8 @@ function AdminEvents() {
           </>
         ) : (
           <div className="text-center py-12">
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No events found</h3>
-            <p className="text-gray-500 mb-6">
+            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">No events found</h3>
+            <p className="text-gray-500 dark:text-gray-400 mb-6">
               {search ? 'Try adjusting your search criteria' : 'Get started by creating your first event'}
             </p>
             {!search && (
@@ -195,9 +197,9 @@ function AdminEvents() {
       {/* Delete Confirmation Modal */}
       {showDeleteModal && (
         <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg max-w-md w-full p-6">
-            <h3 className="text-lg font-medium text-gray-900 mb-4">Confirm Delete</h3>
-            <p className="text-gray-500 mb-6">
+          <div className="bg-white dark:bg-gray-900 rounded-lg max-w-md w-full p-6">
+            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">Confirm Delete</h3>
+            <p className="text-gray-500 dark:text-gray-300 mb-6">
               Are you sure you want to delete the event "{eventToDelete?.title}"? This action cannot be undone.
             </p>
             <div className="flex justify-end space-x-3">

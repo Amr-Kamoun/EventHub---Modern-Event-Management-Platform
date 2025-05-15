@@ -49,50 +49,51 @@ const AdminRoute = ({ children }) => {
   return children
 }
 
-
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Layout />}>
-        <Route index element={<HomePage />} />
-        <Route path="events" element={<EventsPage />} />
-        <Route path="events/:id" element={<EventDetailsPage />} />
-        <Route path="login" element={<LoginPage />} />
-        <Route path="register" element={<RegisterPage />} />
-        
-        {/* Protected routes */}
-        <Route path="profile" element={
-          <ProtectedRoute>
-            <ProfilePage />
-          </ProtectedRoute>
-        } />
-        
-        {/* Admin routes */}
-        <Route path="admin" element={
-          <AdminRoute>
-            <AdminDashboard />
-          </AdminRoute>
-        } />
-        <Route path="admin/events" element={
-          <AdminRoute>
-            <AdminEvents />
-          </AdminRoute>
-        } />
-        <Route path="admin/events/new" element={  // ✅ ADDED
-          <AdminRoute>
-            <AdminCreateEvent />
-          </AdminRoute>
-        } />
-        <Route path="admin/users" element={
-          <AdminRoute>
-            <AdminUsers />
-          </AdminRoute>
-        } />
-        
-        {/* 404 route */}
-        <Route path="*" element={<NotFoundPage />} />
-      </Route>
-    </Routes>
+    <div className="bg-white text-black dark:bg-gray-900 dark:text-white min-h-screen transition-colors">
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<HomePage />} />
+          <Route path="events" element={<EventsPage />} />
+          <Route path="events/:id" element={<EventDetailsPage />} />
+          <Route path="login" element={<LoginPage />} />
+          <Route path="register" element={<RegisterPage />} />
+          
+          {/* Protected routes */}
+          <Route path="profile" element={
+            <ProtectedRoute>
+              <ProfilePage />
+            </ProtectedRoute>
+          } />
+          
+          {/* Admin routes */}
+          <Route path="admin" element={
+            <AdminRoute>
+              <AdminDashboard />
+            </AdminRoute>
+          } />
+          <Route path="admin/events" element={
+            <AdminRoute>
+              <AdminEvents />
+            </AdminRoute>
+          } />
+          <Route path="admin/events/new" element={  // ✅ ADDED
+            <AdminRoute>
+              <AdminCreateEvent />
+            </AdminRoute>
+          } />
+          <Route path="admin/users" element={
+            <AdminRoute>
+              <AdminUsers />
+            </AdminRoute>
+          } />
+          
+          {/* 404 route */}
+          <Route path="*" element={<NotFoundPage />} />
+        </Route>
+      </Routes>
+    </div>
   )
 }
 

@@ -32,7 +32,7 @@ function EventDetailsPage() {
 
         if (user) {
           const registrations = await getUserRegistrations(user.id)
-          const isUserRegistered = registrations.some(reg => String(reg.event_id) === String(id)) // ✅ safer comparison
+          const isUserRegistered = registrations.some(reg => String(reg.event_id) === String(id))
           setIsRegistered(isUserRegistered)
         }
       } catch (error) {
@@ -111,7 +111,7 @@ function EventDetailsPage() {
         <FiArrowLeft className="mr-2" /> Back to Events
       </Link>
 
-      <div className="bg-white rounded-xl shadow-soft overflow-hidden">
+      <div className="bg-white dark:bg-gray-900 rounded-xl shadow-soft overflow-hidden transition-colors">
         <div className="relative h-64 md:h-96">
           <img
             src={image || 'https://images.pexels.com/photos/2747449/pexels-photo-2747449.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'}
@@ -126,44 +126,44 @@ function EventDetailsPage() {
         <div className="p-6 md:p-8">
           <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-6">
             <div className="flex-1">
-              <h1 className="text-3xl font-bold mb-4">{title}</h1>
+              <h1 className="text-3xl font-bold mb-4 dark:text-white">{title}</h1>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                <div className="flex items-center text-gray-600">
+                <div className="flex items-center text-gray-600 dark:text-gray-300">
                   <FiCalendar className="mr-2 text-primary-500" />
                   <span>{formattedDate}</span>
                 </div>
 
-                <div className="flex items-center text-gray-600">
+                <div className="flex items-center text-gray-600 dark:text-gray-300">
                   <FiClock className="mr-2 text-primary-500" />
                   <span>{time || '7:00 PM'}</span>
                 </div>
 
-                <div className="flex items-center text-gray-600">
+                <div className="flex items-center text-gray-600 dark:text-gray-300">
                   <FiMapPin className="mr-2 text-primary-500" />
                   <span>{location}</span>
                 </div>
 
-                <div className="flex items-center text-gray-600">
+                <div className="flex items-center text-gray-600 dark:text-gray-300">
                   <FiUser className="mr-2 text-primary-500" />
                   <span>{organizer || 'EventHub'}</span>
                 </div>
               </div>
 
               <div className="mb-8">
-                <h2 className="text-xl font-semibold mb-3">About This Event</h2>
-                <p className="text-gray-700 whitespace-pre-line">{description}</p>
+                <h2 className="text-xl font-semibold mb-3 dark:text-white">About This Event</h2>
+                <p className="text-gray-700 dark:text-gray-300 whitespace-pre-line">{description}</p>
               </div>
             </div>
 
-            <div className="w-full md:w-80 bg-gray-50 rounded-lg p-6">
+            <div className="w-full md:w-80 bg-gray-50 dark:bg-gray-800 rounded-lg p-6 transition-colors">
               <div className="mb-4">
-                <span className="text-2xl font-bold text-gray-900">{price ? `$${price}` : 'Free'}</span>
+                <span className="text-2xl font-bold text-gray-900 dark:text-white">{price ? `$${price}` : 'Free'}</span>
               </div>
 
               {isRegistered ? (
                 <button
-                  className="w-full btn bg-gray-200 hover:bg-gray-300 text-gray-800 mb-4"
+                  className="w-full btn bg-gray-200 hover:bg-gray-300 text-gray-800 dark:text-gray-900 mb-4"
                   onClick={handleCancelRegistration}
                   disabled={registrationLoading}
                 >
@@ -190,15 +190,15 @@ function EventDetailsPage() {
                 </button>
               </div>
 
-              <div className="mt-6 pt-6 border-t border-gray-200">
-                <h3 className="font-semibold mb-2">Event Details</h3>
-                <ul className="space-y-2 text-sm">
+              <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-600">
+                <h3 className="font-semibold mb-2 dark:text-white">Event Details</h3>
+                <ul className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
                   <li className="flex items-start">
-                    <FiTag className="mt-0.5 mr-2 text-gray-500" />
+                    <FiTag className="mt-0.5 mr-2 text-gray-500 dark:text-gray-400" />
                     <span>{category}</span>
                   </li>
                   <li className="flex items-start">
-                    <FiUser className="mt-0.5 mr-2 text-gray-500" />
+                    <FiUser className="mt-0.5 mr-2 text-gray-500 dark:text-gray-400" />
                     <span>Organized by {organizer || 'EventHub'}</span>
                   </li>
                 </ul>
