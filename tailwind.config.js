@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+const tailwindcssDir = require('tailwindcss-dir') // ✅ Correct plugin for RTL support
+
 module.exports = {
   darkMode: 'class', // ✅ Enables dark mode via class="dark"
   content: [
@@ -65,5 +67,7 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    tailwindcssDir(), // ✅ Correct usage to enable RTL support
+  ],
 }

@@ -1,3 +1,4 @@
+import { useEffect } from 'react' // ✅ Added
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { useAuth } from './contexts/AuthContext'
 import Layout from './components/Layout'
@@ -12,15 +13,17 @@ import AdminEvents from './pages/admin/AdminEvents'
 import AdminUsers from './pages/admin/AdminUsers'
 import AdminCreateEvent from './pages/admin/AdminCreateEvent' // ✅ ADDED
 import NotFoundPage from './pages/NotFoundPage'
+import i18n from 'i18next' // ✅ Added for language direction detection
+import Loader from './components/Loader' // ✅ Added loader component
 
 // Protected route component
 const ProtectedRoute = ({ children }) => {
   const { user, loading } = useAuth()
-  
-  if (loading) return <div className="flex justify-center items-center min-h-screen">Loading...</div>
-  
+
+  if (loading) return <Loader /> // ✅ Use loader
+
   if (!user) return <Navigate to="/login" replace />
-  
+
   return children
 }
 
@@ -32,9 +35,7 @@ const AdminRoute = ({ children }) => {
   console.log('[AdminRoute] isAdmin:', isAdmin)
   console.log('[AdminRoute] loading:', loading)
 
-  if (loading) {
-    return <div className="flex justify-center items-center min-h-screen">Loading admin route...</div>
-  }
+  if (loading) return <Loader /> // ✅ Use loader
 
   if (!user) {
     console.warn('[AdminRoute] No user detected — redirecting to login')
@@ -50,6 +51,14 @@ const AdminRoute = ({ children }) => {
 }
 
 function App() {
+  const { loading } = useAuth()
+
+  useEffect(() => {
+    document.documentElement.dir = i18n.language === 'ar' ? 'rtl' : 'ltr'
+  }, [i18n.language]) // ✅ Set text direction dynamically
+
+  if (loading) return <Loader /> // ✅ Block route render until ready
+
   return (
     <div className="bg-white text-black dark:bg-gray-900 dark:text-white min-h-screen transition-colors">
       <Routes>
@@ -59,14 +68,14 @@ function App() {
           <Route path="events/:id" element={<EventDetailsPage />} />
           <Route path="login" element={<LoginPage />} />
           <Route path="register" element={<RegisterPage />} />
-          
+
           {/* Protected routes */}
           <Route path="profile" element={
             <ProtectedRoute>
               <ProfilePage />
             </ProtectedRoute>
           } />
-          
+
           {/* Admin routes */}
           <Route path="admin" element={
             <AdminRoute>
@@ -78,7 +87,7 @@ function App() {
               <AdminEvents />
             </AdminRoute>
           } />
-          <Route path="admin/events/new" element={  // ✅ ADDED
+          <Route path="admin/events/new" element={ // ✅ ADDED
             <AdminRoute>
               <AdminCreateEvent />
             </AdminRoute>
@@ -88,7 +97,7 @@ function App() {
               <AdminUsers />
             </AdminRoute>
           } />
-          
+
           {/* 404 route */}
           <Route path="*" element={<NotFoundPage />} />
         </Route>

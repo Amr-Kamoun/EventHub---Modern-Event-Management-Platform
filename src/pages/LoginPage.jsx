@@ -3,14 +3,16 @@ import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { FiMail, FiLock, FiAlertCircle } from 'react-icons/fi'
 import { signIn } from '../lib/supabase'
 import toast from 'react-hot-toast'
-import React from 'react';
+import React from 'react'
+import { useTranslation } from 'react-i18next'
 
 function LoginPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  
+  const { t } = useTranslation()
+
   const navigate = useNavigate()
   const location = useLocation()
   const from = location.state?.from?.pathname || '/'
@@ -22,12 +24,12 @@ function LoginPage() {
 
     try {
       await signIn(email, password)
-      toast.success('Logged in successfully')
+      toast.success(t('loginSuccess'))
       navigate(from, { replace: true })
     } catch (error) {
       console.error('Login error:', error)
-      setError('Invalid email or password')
-      toast.error('Login failed')
+      setError(t('loginError'))
+      toast.error(t('loginFailed'))
     } finally {
       setLoading(false)
     }
@@ -37,14 +39,14 @@ function LoginPage() {
     <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-950 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8 bg-white dark:bg-gray-900 text-gray-800 dark:text-white p-8 rounded-xl shadow-soft">
         <div className="text-center">
-          <h1 className="text-3xl font-bold mb-2">Welcome back</h1>
-          <p className="text-gray-600 dark:text-gray-400">Sign in to your account to continue</p>
+        <h1 className="text-3xl font-bold mb-2">{t('loginWelcome')}</h1>
+        <p className="text-gray-600 dark:text-gray-400">{t('signinPrompt')}</p>
         </div>
 
         {error && (
-          <div className="bg-red-50 dark:bg-red-900 border-l-4 border-red-500 p-4 mb-4">
-            <div className="flex items-center">
-              <FiAlertCircle className="text-red-500 mr-2" />
+          <div className="bg-red-50 dark:bg-red-900 border-s-4 border-red-500 p-4 mb-4">
+            <div className="flex items-center rtl:flex-row-reverse rtl:space-x-reverse space-x-2">
+              <FiAlertCircle className="text-red-500" />
               <span className="text-red-700 dark:text-red-100">{error}</span>
             </div>
           </div>
@@ -54,10 +56,10 @@ function LoginPage() {
           <div className="space-y-4">
             <div>
               <label htmlFor="email" className="form-label dark:text-gray-300">
-                Email address
+                {t('email')}
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <div className="absolute inset-y-0 start-0 ps-3 flex items-center pointer-events-none">
                   <FiMail className="text-gray-400 dark:text-gray-400" />
                 </div>
                 <input
@@ -66,8 +68,8 @@ function LoginPage() {
                   type="email"
                   autoComplete="email"
                   required
-                  className="form-input pl-10 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-800 dark:text-white"
-                  placeholder="Email address"
+                  className="form-input ps-10 pr-10 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-800 dark:text-white"
+                  placeholder={t('email')}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
@@ -76,10 +78,10 @@ function LoginPage() {
 
             <div>
               <label htmlFor="password" className="form-label dark:text-gray-300">
-                Password
+                {t('password')}
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <div className="absolute inset-y-0 start-0 ps-3 flex items-center pointer-events-none">
                   <FiLock className="text-gray-400 dark:text-gray-400" />
                 </div>
                 <input
@@ -88,8 +90,8 @@ function LoginPage() {
                   type="password"
                   autoComplete="current-password"
                   required
-                  className="form-input pl-10 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-800 dark:text-white"
-                  placeholder="Password"
+                  className="form-input ps-10 pr-10 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-800 dark:text-white"
+                  placeholder={t('password')}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
@@ -105,14 +107,14 @@ function LoginPage() {
                 type="checkbox"
                 className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 dark:border-gray-600 rounded"
               />
-              <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700 dark:text-gray-300">
-                Remember me
+              <label htmlFor="remember-me" className="ms-2 block text-sm text-gray-700 dark:text-gray-300">
+                {t('rememberMe')}
               </label>
             </div>
 
             <div className="text-sm">
               <a href="#" className="text-primary-600 hover:text-primary-500 dark:text-primary-400 dark:hover:text-primary-300">
-                Forgot your password?
+                {t('forgotPassword')}
               </a>
             </div>
           </div>
@@ -123,15 +125,15 @@ function LoginPage() {
               className="btn-primary w-full py-3"
               disabled={loading}
             >
-              {loading ? 'Signing in...' : 'Sign in'}
+              {loading ? t('signingIn') : t('signIn')}
             </button>
           </div>
 
           <div className="text-center">
             <p className="text-sm text-gray-600 dark:text-gray-400">
-              Don't have an account?{' '}
+              {t('noAccount')}{' '}
               <Link to="/register" className="text-primary-600 hover:text-primary-500 dark:text-primary-400 dark:hover:text-primary-300 font-medium">
-                Sign up
+                {t('register')}
               </Link>
             </p>
           </div>

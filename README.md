@@ -2,6 +2,8 @@
 
 EventHub is a full-featured event management platform built with React, Tailwind CSS, and Supabase. It enables users to discover, register for, and manage events while providing organizers with powerful tools to create and manage their events.
 
+🎥 [Watch Demo Video](https://drive.google.com/file/d/1DyZXsMKkv_15FctrKz7IUm6BS2ASbNMJ/view?usp=sharing)
+
 ## Features
 
 - 🔐 **User Authentication**
@@ -51,6 +53,8 @@ EventHub is a full-featured event management platform built with React, Tailwind
    ```bash
    npm install
    ```
+
+> **Note**: For the smoothest experience, it's recommended to use incognito mode when testing the application.
 
 3. Set up environment variables:
    Create a `.env` file in the root directory with your Supabase credentials:

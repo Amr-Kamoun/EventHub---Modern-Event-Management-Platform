@@ -1,18 +1,20 @@
-import { useState, useEffect } from 'react'
-import { getEvents, getUserRegistrations } from '../lib/supabase' // ✅ added
-import { useAuth } from '../contexts/AuthContext' // ✅ added
+import { useState, useEffect } from 'react' 
+import { getEvents, getUserRegistrations } from '../lib/supabase'
+import { useAuth } from '../contexts/AuthContext'
 import EventCard from '../components/EventCard'
 import EventFilter from '../components/EventFilter'
-import React from 'react';
+import { useTranslation } from 'react-i18next'
+import React from 'react'
 
 function EventsPage() {
   const [events, setEvents] = useState([])
   const [filteredEvents, setFilteredEvents] = useState([])
-  const [registeredEventIds, setRegisteredEventIds] = useState([]) // ✅ added
+  const [registeredEventIds, setRegisteredEventIds] = useState([])
   const [loading, setLoading] = useState(true)
   const [filters, setFilters] = useState({})
-  const { user } = useAuth() // ✅ added
-  
+  const { user } = useAuth()
+  const { t, i18n } = useTranslation()
+
   useEffect(() => {
     const fetchEvents = async () => {
       try {
@@ -33,7 +35,7 @@ function EventsPage() {
     }
 
     fetchEvents()
-  }, [user]) // ✅ rerun when user is available
+  }, [user])
 
   const handleFilter = async (filterParams) => {
     setFilters(filterParams)
@@ -59,12 +61,13 @@ function EventsPage() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div
+      className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12"
+      dir={i18n.dir()} // 👈 Set text direction dynamically
+    >
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-4">Discover Events</h1>
-        <p className="text-gray-600">
-          Browse and find events that match your interests. Use the filters to narrow down your search.
-        </p>
+        <h1 className="text-3xl font-bold text-gray-900 mb-4 text-left rtl:text-right">{t('discoverEvents')}</h1>
+        <p className="text-gray-600 text-left rtl:text-right">{t('browsePrompt')}</p>
       </div>
 
       <EventFilter onFilter={handleFilter} />
@@ -79,18 +82,16 @@ function EventsPage() {
             <EventCard
               key={event.id}
               event={event}
-              isRegistered={registeredEventIds.includes(event.id)} // ✅ pass registration status
+              isRegistered={registeredEventIds.includes(event.id)}
             />
           ))}
         </div>
       ) : (
         <div className="text-center py-12 bg-white rounded-lg shadow-sm">
-          <h3 className="text-xl font-semibold mb-2">No events found</h3>
-          <p className="text-gray-500 mb-4">
-            We couldn't find any events matching your criteria. Try adjusting your filters.
-          </p>
+          <h3 className="text-xl font-semibold mb-2">{t('noEventsFound')}</h3>
+          <p className="text-gray-500 mb-4">{t('noEventsMessage')}</p>
           <button className="btn-outline" onClick={() => handleFilter({})}>
-            Clear Filters
+            {t('clearFilters')}
           </button>
         </div>
       )}

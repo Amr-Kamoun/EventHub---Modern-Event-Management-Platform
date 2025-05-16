@@ -2,8 +2,11 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { createEvent } from '../../lib/supabase'
 import toast from 'react-hot-toast'
+import { useTranslation } from 'react-i18next'
 
 function AdminCreateEvent() {
+  const { t } = useTranslation()
+
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [category, setCategory] = useState('')
@@ -26,7 +29,7 @@ function AdminCreateEvent() {
     setLoading(true)
 
     if (!isValidImageUrl(imageUrl)) {
-      toast.error('❌ Invalid image URL. Please use a .jpg, .jpeg, .png, or .webp link.')
+      toast.error(t('invalidImageUrl'))
       setLoading(false)
       return
     }
@@ -45,11 +48,11 @@ function AdminCreateEvent() {
       }
 
       await createEvent(newEvent)
-      toast.success('✅ Event created successfully!')
+      toast.success(t('eventCreated'))
       navigate('/admin/events')
     } catch (error) {
-      console.error('❌ [Submit] Create event error:', error)
-      toast.error('Failed to create event')
+      console.error('[Submit] Create event error:', error)
+      toast.error(t('eventCreateFail'))
     } finally {
       setLoading(false)
     }
@@ -57,18 +60,18 @@ function AdminCreateEvent() {
 
   return (
     <div className="max-w-3xl mx-auto p-6 bg-white dark:bg-gray-900 shadow rounded-lg mt-10 transition-colors text-gray-800 dark:text-white">
-      <h2 className="text-2xl font-bold mb-6">Create New Event</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <h2 className="text-2xl font-bold mb-6">{t('createEvent')}</h2>
+      <form onSubmit={handleSubmit} className="space-y-4 rtl:space-y-reverse">
         <input
           className="form-input bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded px-4 py-2 w-full dark:text-white"
-          placeholder="Title"
+          placeholder={t('eventTitle')}
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           required
         />
         <textarea
           className="form-input bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded px-4 py-2 w-full dark:text-white"
-          placeholder="Description"
+          placeholder={t('eventDescription')}
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           required
@@ -80,15 +83,15 @@ function AdminCreateEvent() {
           onChange={(e) => setCategory(e.target.value)}
           required
         >
-          <option value="">Select Category</option>
-          <option value="Conference">Conference</option>
-          <option value="Workshop">Workshop</option>
-          <option value="Seminar">Seminar</option>
-          <option value="Concert">Concert</option>
-          <option value="Exhibition">Exhibition</option>
-          <option value="Sports">Sports</option>
-          <option value="Networking">Networking</option>
-          <option value="Other">Other</option>
+          <option value="">{t('selectCategory')}</option>
+          <option value="Conference">{t('categoryConference')}</option>
+          <option value="Workshop">{t('categoryWorkshop')}</option>
+          <option value="Seminar">{t('categorySeminar')}</option>
+          <option value="Concert">{t('categoryConcert')}</option>
+          <option value="Exhibition">{t('categoryExhibition')}</option>
+          <option value="Sports">{t('categorySports')}</option>
+          <option value="Networking">{t('categoryNetworking')}</option>
+          <option value="Other">{t('categoryOther')}</option>
         </select>
 
         <input
@@ -107,14 +110,14 @@ function AdminCreateEvent() {
         />
         <input
           className="form-input bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded px-4 py-2 w-full dark:text-white"
-          placeholder="Location"
+          placeholder={t('eventLocation')}
           value={location}
           onChange={(e) => setLocation(e.target.value)}
           required
         />
         <input
           className="form-input bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded px-4 py-2 w-full dark:text-white"
-          placeholder="Organizer"
+          placeholder={t('eventOrganizer')}
           value={organizer}
           onChange={(e) => setOrganizer(e.target.value)}
           required
@@ -122,14 +125,14 @@ function AdminCreateEvent() {
         <input
           type="number"
           className="form-input bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded px-4 py-2 w-full dark:text-white"
-          placeholder="Price"
+          placeholder={t('eventPrice')}
           value={price}
           onChange={(e) => setPrice(e.target.value)}
           required
         />
         <input
           className="form-input bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded px-4 py-2 w-full dark:text-white"
-          placeholder="Image URL (e.g. https://.../image.jpg)"
+          placeholder={t('eventImage')}
           value={imageUrl}
           onChange={(e) => setImageUrl(e.target.value)}
           required
@@ -144,7 +147,7 @@ function AdminCreateEvent() {
         )}
 
         <button type="submit" className="btn-primary w-full" disabled={loading}>
-          {loading ? 'Creating...' : 'Create Event'}
+          {loading ? t('creating') : t('createEvent')}
         </button>
       </form>
     </div>

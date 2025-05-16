@@ -2,8 +2,11 @@ import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { FiUsers, FiCalendar, FiBarChart2, FiActivity, FiPlus } from 'react-icons/fi'
 import { getEvents } from '../../lib/supabase'
+import { useTranslation } from 'react-i18next'
 
 function AdminDashboard() {
+  const { t } = useTranslation()
+
   const [stats, setStats] = useState({
     totalEvents: 0,
     upcomingEvents: 0,
@@ -24,8 +27,8 @@ function AdminDashboard() {
         setStats({
           totalEvents: events.length,
           upcomingEvents: upcomingEvents.length,
-          totalUsers: 120, // TODO: Replace with real Supabase query
-          totalRegistrations: 350, // TODO: Replace with real Supabase query
+          totalUsers: 120,
+          totalRegistrations: 350,
         })
 
         setRecentEvents(events.slice(0, 5))
@@ -50,19 +53,23 @@ function AdminDashboard() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Admin Dashboard</h1>
-        <p className="text-gray-600 dark:text-gray-300">Overview of your events, users, and platform statistics</p>
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+          {t('adminDashboard')}
+        </h1>
+        <p className="text-gray-600 dark:text-gray-300">
+          {t('dashboardOverview')}
+        </p>
       </div>
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <div className="bg-white dark:bg-gray-900 rounded-xl shadow-soft p-6">
           <div className="flex items-center">
-            <div className="bg-primary-100 p-3 rounded-full mr-4">
+            <div className="bg-primary-100 p-3 rounded-full me-4 rtl:ms-4 rtl:me-0">
               <FiCalendar className="text-primary-600 text-xl" />
             </div>
             <div>
-              <p className="text-gray-500 dark:text-gray-400 text-sm">Total Events</p>
+              <p className="text-gray-500 dark:text-gray-400 text-sm">{t('totalEvents')}</p>
               <p className="text-2xl font-bold dark:text-white">{stats.totalEvents}</p>
             </div>
           </div>
@@ -70,11 +77,11 @@ function AdminDashboard() {
 
         <div className="bg-white dark:bg-gray-900 rounded-xl shadow-soft p-6">
           <div className="flex items-center">
-            <div className="bg-secondary-100 p-3 rounded-full mr-4">
+            <div className="bg-secondary-100 p-3 rounded-full me-4 rtl:ms-4 rtl:me-0">
               <FiActivity className="text-secondary-600 text-xl" />
             </div>
             <div>
-              <p className="text-gray-500 dark:text-gray-400 text-sm">Upcoming Events</p>
+              <p className="text-gray-500 dark:text-gray-400 text-sm">{t('upcomingEvents')}</p>
               <p className="text-2xl font-bold dark:text-white">{stats.upcomingEvents}</p>
             </div>
           </div>
@@ -82,11 +89,11 @@ function AdminDashboard() {
 
         <div className="bg-white dark:bg-gray-900 rounded-xl shadow-soft p-6">
           <div className="flex items-center">
-            <div className="bg-accent-100 p-3 rounded-full mr-4">
+            <div className="bg-accent-100 p-3 rounded-full me-4 rtl:ms-4 rtl:me-0">
               <FiUsers className="text-accent-600 text-xl" />
             </div>
             <div>
-              <p className="text-gray-500 dark:text-gray-400 text-sm">Total Users</p>
+              <p className="text-gray-500 dark:text-gray-400 text-sm">{t('totalUsers')}</p>
               <p className="text-2xl font-bold dark:text-white">{stats.totalUsers}</p>
             </div>
           </div>
@@ -94,11 +101,11 @@ function AdminDashboard() {
 
         <div className="bg-white dark:bg-gray-900 rounded-xl shadow-soft p-6">
           <div className="flex items-center">
-            <div className="bg-gray-100 dark:bg-gray-700 p-3 rounded-full mr-4">
+            <div className="bg-gray-100 dark:bg-gray-700 p-3 rounded-full me-4 rtl:ms-4 rtl:me-0">
               <FiBarChart2 className="text-gray-600 dark:text-gray-300 text-xl" />
             </div>
             <div>
-              <p className="text-gray-500 dark:text-gray-400 text-sm">Total Registrations</p>
+              <p className="text-gray-500 dark:text-gray-400 text-sm">{t('totalRegistrations')}</p>
               <p className="text-2xl font-bold dark:text-white">{stats.totalRegistrations}</p>
             </div>
           </div>
@@ -107,30 +114,30 @@ function AdminDashboard() {
 
       {/* Quick Actions */}
       <div className="bg-white dark:bg-gray-900 rounded-xl shadow-soft p-6 mb-8">
-        <h2 className="text-xl font-semibold dark:text-white mb-4">Quick Actions</h2>
+        <h2 className="text-xl font-semibold dark:text-white mb-4">{t('quickActions')}</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <Link
             to="/admin/events"
-            className="btn bg-primary-50 dark:bg-primary-600 text-primary-700 dark:text-white hover:bg-primary-100 dark:hover:bg-primary-700 border border-primary-200 dark:border-transparent flex items-center justify-center py-3"
+            className="btn bg-blue-100 dark:bg-blue-600 text-blue-700 dark:text-white hover:bg-blue-200 dark:hover:bg-blue-700 border border-blue-200 dark:border-transparent flex items-center justify-center py-3 rtl:flex-row-reverse"
           >
-            <FiCalendar className="mr-2" />
-            Manage Events
+            <FiCalendar className="me-2 rtl:ms-2 rtl:me-0" />
+            {t('manageEvents')}
           </Link>
 
           <Link
             to="/admin/users"
-            className="btn bg-secondary-50 dark:bg-secondary-600 text-secondary-700 dark:text-white hover:bg-secondary-100 dark:hover:bg-secondary-700 border border-secondary-200 dark:border-transparent flex items-center justify-center py-3"
+            className="btn bg-green-100 dark:bg-green-600 text-green-700 dark:text-white hover:bg-green-200 dark:hover:bg-green-700 border border-green-200 dark:border-transparent flex items-center justify-center py-3 rtl:flex-row-reverse"
           >
-            <FiUsers className="mr-2" />
-            Manage Users
+            <FiUsers className="me-2 rtl:ms-2 rtl:me-0" />
+            {t('manageUsers')}
           </Link>
 
           <Link
             to="/admin/events/new"
-            className="btn bg-accent-50 dark:bg-accent-600 text-accent-700 dark:text-white hover:bg-accent-100 dark:hover:bg-accent-700 border border-accent-200 dark:border-transparent flex items-center justify-center py-3"
+            className="btn bg-yellow-100 dark:bg-yellow-600 text-yellow-700 dark:text-white hover:bg-yellow-200 dark:hover:bg-yellow-700 border border-yellow-200 dark:border-transparent flex items-center justify-center py-3 rtl:flex-row-reverse"
           >
-            <FiPlus className="mr-2" />
-            Create New Event
+            <FiPlus className="me-2 rtl:ms-2 rtl:me-0" />
+            {t('createEvent')}
           </Link>
         </div>
       </div>
@@ -138,9 +145,9 @@ function AdminDashboard() {
       {/* Recent Events */}
       <div className="bg-white dark:bg-gray-900 rounded-xl shadow-soft p-6">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-xl font-semibold dark:text-white">Recent Events</h2>
+          <h2 className="text-xl font-semibold dark:text-white">{t('recentEvents')}</h2>
           <Link to="/admin/events" className="text-primary-500 hover:text-primary-600">
-            View All
+            {t('viewAll')}
           </Link>
         </div>
 
@@ -148,7 +155,7 @@ function AdminDashboard() {
           <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
             <thead className="bg-gray-50 dark:bg-gray-800">
               <tr>
-                {['Event', 'Date', 'Location', 'Category', 'Status'].map((header) => (
+                {[t('event'), t('date'), t('location'), t('category'), t('status')].map((header) => (
                   <th
                     key={header}
                     className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
@@ -182,14 +189,12 @@ function AdminDashboard() {
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span
-                        className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                          isUpcoming
-                            ? 'bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200'
-                            : 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300'
-                        }`}
-                      >
-                        {isUpcoming ? 'Upcoming' : 'Past'}
+                      <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                        isUpcoming
+                          ? 'bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200'
+                          : 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300'
+                      }`}>
+                        {t(isUpcoming ? 'upcoming' : 'past')}
                       </span>
                     </td>
                   </tr>

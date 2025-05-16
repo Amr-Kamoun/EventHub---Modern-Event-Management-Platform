@@ -3,8 +3,11 @@ import { Link } from 'react-router-dom'
 import { FiPlus, FiEdit, FiTrash2, FiEye, FiSearch } from 'react-icons/fi'
 import { getEvents, deleteEvent } from '../../lib/supabase'
 import toast from 'react-hot-toast'
+import { useTranslation } from 'react-i18next'
 
 function AdminEvents() {
+  const { t } = useTranslation()
+
   const [events, setEvents] = useState([])
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState('')
@@ -24,7 +27,7 @@ function AdminEvents() {
       setEvents(eventsData)
     } catch (error) {
       console.error('Error fetching events:', error)
-      toast.error('Failed to load events')
+      toast.error(t('loadEventsFailed'))
     } finally {
       setLoading(false)
     }
@@ -41,10 +44,10 @@ function AdminEvents() {
     try {
       await deleteEvent(eventToDelete.id)
       setEvents(events.filter(event => event.id !== eventToDelete.id))
-      toast.success('Event deleted successfully')
+      toast.success(t('deleteSuccess'))
     } catch (error) {
       console.error('Error deleting event:', error)
-      toast.error('Failed to delete event')
+      toast.error(t('deleteFailed'))
     } finally {
       setShowDeleteModal(false)
       setEventToDelete(null)
@@ -61,13 +64,13 @@ function AdminEvents() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 dark:text-white">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Manage Events</h1>
-          <p className="text-gray-600 dark:text-gray-400">Create, edit, and delete events on your platform</p>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">{t('manageEvents')}</h1>
+          <p className="text-gray-600 dark:text-gray-400">{t('manageEventsDesc')}</p>
         </div>
         <div className="mt-4 md:mt-0">
           <Link to="/admin/events/new" className="btn-primary flex items-center">
             <FiPlus className="mr-2" />
-            Create New Event
+            {t('createEvent')}
           </Link>
         </div>
       </div>
@@ -81,7 +84,7 @@ function AdminEvents() {
             </div>
             <input
               type="text"
-              placeholder="Search events..."
+              placeholder={t('searchEvents')}
               className="form-input pl-10 bg-white dark:bg-gray-800 text-gray-800 dark:text-white border-gray-300 dark:border-gray-600"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
@@ -102,12 +105,11 @@ function AdminEvents() {
               <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                 <thead className="bg-gray-50 dark:bg-gray-800">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">Event</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">Date</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">Location</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">Category</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">Status</th>
-                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">Actions</th>
+                    {[t('event'), t('date'), t('location'), t('category'), t('status'), t('actions')].map((label, i) => (
+                      <th key={i} className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">
+                        {label}
+                      </th>
+                    ))}
                   </tr>
                 </thead>
                 <tbody className="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-700">
@@ -137,18 +139,18 @@ function AdminEvents() {
                               ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300'
                               : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'
                           }`}>
-                            {isUpcoming ? 'Upcoming' : 'Past'}
+                            {isUpcoming ? t('upcoming') : t('past')}
                           </span>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                           <div className="flex justify-end space-x-2">
-                            <Link to={`/events/${event.id}`} className="text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-white" title="View">
+                            <Link to={`/events/${event.id}`} className="text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-white" title={t('viewDetails')}>
                               <FiEye />
                             </Link>
-                            <Link to={`/admin/events/edit/${event.id}`} className="text-primary-500 hover:text-primary-700" title="Edit">
+                            <Link to={`/admin/events/edit/${event.id}`} className="text-primary-500 hover:text-primary-700" title={t('edit')}>
                               <FiEdit />
                             </Link>
-                            <button className="text-red-500 hover:text-red-700" onClick={() => handleDeleteClick(event)} title="Delete">
+                            <button className="text-red-500 hover:text-red-700" onClick={() => handleDeleteClick(event)} title={t('delete')}>
                               <FiTrash2 />
                             </button>
                           </div>
@@ -160,51 +162,51 @@ function AdminEvents() {
               </table>
             </div>
 
-            {/* Pagination Controls */}
+            {/* Pagination */}
             <div className="flex justify-center items-center mt-6 space-x-4">
               <button
                 className="px-4 py-2 bg-white dark:bg-gray-800 border border-primary-500 text-primary-600 rounded disabled:opacity-50"
                 onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
                 disabled={currentPage === 1}
               >
-                Previous
+                {t('previous')}
               </button>
-              <span className="text-gray-700 dark:text-gray-300 font-medium">Page {currentPage}</span>
+              <span className="text-gray-700 dark:text-gray-300 font-medium">{t('page')} {currentPage}</span>
               <button
                 className="px-4 py-2 bg-white dark:bg-gray-800 border border-primary-500 text-primary-600 rounded disabled:opacity-50"
                 onClick={() => setCurrentPage((prev) => prev + 1)}
                 disabled={events.length < eventsPerPage}
               >
-                Next
+                {t('next')}
               </button>
             </div>
           </>
         ) : (
           <div className="text-center py-12">
-            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">No events found</h3>
+            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">{t('noEventsFound')}</h3>
             <p className="text-gray-500 dark:text-gray-400 mb-6">
-              {search ? 'Try adjusting your search criteria' : 'Get started by creating your first event'}
+              {search ? t('noEventsMessage') : t('createPrompt')}
             </p>
             {!search && (
               <Link to="/admin/events/new" className="btn-primary">
-                Create New Event
+                {t('createEvent')}
               </Link>
             )}
           </div>
         )}
       </div>
 
-      {/* Delete Confirmation Modal */}
+      {/* Delete Modal */}
       {showDeleteModal && (
         <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">
           <div className="bg-white dark:bg-gray-900 rounded-lg max-w-md w-full p-6">
-            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">Confirm Delete</h3>
+            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">{t('confirmDelete')}</h3>
             <p className="text-gray-500 dark:text-gray-300 mb-6">
-              Are you sure you want to delete the event "{eventToDelete?.title}"? This action cannot be undone.
+              {t('deleteMessage', { title: eventToDelete?.title })}
             </p>
             <div className="flex justify-end space-x-3">
-              <button className="btn-outline" onClick={() => setShowDeleteModal(false)}>Cancel</button>
-              <button className="btn bg-red-500 hover:bg-red-600 text-white" onClick={handleDeleteConfirm}>Delete</button>
+              <button className="btn-outline" onClick={() => setShowDeleteModal(false)}>{t('cancel')}</button>
+              <button className="btn bg-red-500 hover:bg-red-600 text-white" onClick={handleDeleteConfirm}>{t('delete')}</button>
             </div>
           </div>
         </div>
