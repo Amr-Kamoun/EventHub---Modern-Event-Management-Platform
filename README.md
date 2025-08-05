@@ -153,17 +153,7 @@ VITE_SUPABASE_ANON_KEY=your-anon-key
 3. Commit your changes
 4. Push to the branch
 5. Open a Pull Request
-
-## 📝 Areeb Technology Competition Submission
-
-- **Student Name**: Amr Kamoun
-- **Graduation Year**: 2025
-- **GitHub Repository Format**: `ATC_01099011493`
-- **Public Repository**: ✅
-- **README Included**: ✅
-- **Setup Instructions**: ✅
-- **Supabase SQL Files**: Located in `supabase/migrations/`
-
+6. 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
